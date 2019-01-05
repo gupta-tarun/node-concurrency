@@ -27,17 +27,21 @@ function start() {
     const MongoClient = require('mongodb').MongoClient;
     const uri = "mongodb+srv://user1:QQ0JVU1JlFlTkfQb@cluster0.mongodb.net/admin";
     const client = new MongoClient(uri, { useNewUrlParser: true });
-//     client.connect(err => {
-//       const collection = client.db("test").collection("devices");
-//      // perform actions on the collection object
-//       client.close();
+     client.connect(err => {
+      const collection = client.db("test").collection("collectiom");
+
       var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
       var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
       var date = Date.now() + '';
       hmac.setEncoding('base64');
       hmac.end(date, function() {
-        res.send('Client Connection is made! ' + hmac.read());
-//       });
+        collection.insertOne({key: hmac.read()}, function(err, res) {
+        // perform actions on the collection object
+          client.close();
+          if(err) { return res.send('Error Happened ' + JSON.stringify(err)); }
+          return res.send('Successful ' + JSON.stringify(res));
+        });
+      });
     });
     
   }
