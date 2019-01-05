@@ -11,12 +11,13 @@
   "author": "Hunter Loftis <hunter@hunterloftis.com>",
   "license": "ISC",
   "engines": {
-    "iojs": "3.0.0"
+    "node": "10.3.0"
   },
   "dependencies": {
     "blitzkrieg": "1.0.0",
     "event-loop-lag": "1.1.0",
     "express": "4.13.3",
-    "throng": "1.0.0"
+    "throng": "1.0.0",
+    "mongodb": "latest"
   }
 }
