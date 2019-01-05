@@ -1,4 +1,5 @@
 var throng = require('throng');
+var mongodb = require('mongodb');
 
 var WORKERS = process.env.WEB_CONCURRENCY || 1;
 var PORT = process.env.PORT || 3000;
@@ -23,13 +24,22 @@ function start() {
     .listen(PORT, onListen);
 
   function cpuBound(req, res, next) {
-    var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
-    var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
-    var date = Date.now() + '';
-    hmac.setEncoding('base64');
-    hmac.end(date, function() {
-      res.send('A hashed date for you! ' + hmac.read());
+    const MongoClient = require('mongodb').MongoClient;
+    const uri = "mongodb+srv://user1:QQ0JVU1JlFlTkfQb@cluster0.mongodb.net/admin";
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+      const collection = client.db("test").collection("devices");
+     // perform actions on the collection object
+      client.close();
+      var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
+      var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
+      var date = Date.now() + '';
+      hmac.setEncoding('base64');
+      hmac.end(date, function() {
+        res.send('Client Connection is made! ' + hmac.read());
+      });
     });
+    
   }
 
   function memoryBound(req, res, next) {
