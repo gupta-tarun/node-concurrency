@@ -31,7 +31,7 @@ function start() {
       throw err;
     }
 
-    db = database;
+    db = database.db;
 
     // Start the application after the database connection is ready
     app
