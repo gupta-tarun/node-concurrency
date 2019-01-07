@@ -21,7 +21,7 @@ function start() {
   var MongoClient = require('mongodb').MongoClient;
   var db;
   
-  var uri = 'mongodb://user1:QQ0JVU1JlFlTkfQb@cluster0-shard-00-00-qxtaq.mongodb.net:27017,cluster0-shard-00-01-qxtaq.mongodb.net:27017,cluster0-shard-00-02-qxtaq.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
+  var uri = 'mongodb://user1:QQ0JVU1JlFlTkfQb@cluster0-shard-00-00-qxtaq.mongodb.net:27017,cluster0-shard-00-01-qxtaq.mongodb.net:27017,cluster0-shard-00-02-qxtaq.mongodb.net:27017/db_1?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
   
   console.error('trying to connect to db ...');
   // Initialize connection once
@@ -32,7 +32,7 @@ function start() {
     }
     console.error(client);
 
-    db = client.db('test');
+    db = client.db('db_1');
 
     // Start the application after the database connection is ready
     app
@@ -46,6 +46,7 @@ function start() {
   });
 
   function cpuBound(req, res, next) {
+    var t = res;
     const collection = db.collection("c_1");
 
     var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
@@ -55,8 +56,8 @@ function start() {
     hmac.end(date, function() {
       collection.insertOne({key: hmac.read()}, function(err, res) {
         // perform actions on the collection object
-        if(err) { return res.send('Error Happened ' + JSON.stringify(err)); }
-        return res.send('Successful ' + JSON.stringify(res));
+        if(err) { return t.send('Error Happened ' + JSON.stringify(err)); }
+        return t.send('Successful ');
       });
     });
   }
