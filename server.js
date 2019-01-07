@@ -11,24 +11,40 @@ throng(start, {
 });
 
 function start() {
+  console.error('starting up ...');
+  
   var crypto = require('crypto');
   var express = require('express');
   var blitz = require('blitzkrieg');
   var app = express();
+  
+  var MongoClient = require('mongodb').MongoClient;
+  var db;
+  
+  console.error('trying to connect to db ...');
+  // Initialize connection once
+  MongoClient.connect("mongodb+srv://user1:QQ0JVU1JlFlTkfQb@cluster0.mongodb.net/db_1", function(err, database) {
+    if(err) {
+      console.error('error while connecting ...' + JSON.stringify(err));
+      throw err;
+    }
 
-  app
+    db = database;
+
+    // Start the application after the database connection is ready
+    app
     .use(blitz(BLITZ_KEY))
     .get('/cpu', cpuBound)
     .get('/memory', memoryBound)
     .get('/io', ioBound)
     .listen(PORT, onListen);
+    
+    console.log("Listening on port " + PORT);
+  });
 
   function cpuBound(req, res, next) {
-    const MongoClient = require('mongodb').MongoClient;
-    const uri = "mongodb+srv://user1:QQ0JVU1JlFlTkfQb@cluster0.mongodb.net/admin";
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-     client.connect(err => {
-      const collection = client.db("test").collection("collectiom");
+    client.connect(err => {
+      const collection = db.collection("c_1");
 
       var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
       var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
