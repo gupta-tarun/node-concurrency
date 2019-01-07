@@ -21,9 +21,11 @@ function start() {
   var MongoClient = require('mongodb').MongoClient;
   var db;
   
+  var uri = 'mongodb://user1:QQ0JVU1JlFlTkfQb@cluster0-shard-00-00-qxtaq.mongodb.net:27017,cluster0-shard-00-01-qxtaq.mongodb.net:27017,cluster0-shard-00-02-qxtaq.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true'
+  
   console.error('trying to connect to db ...');
   // Initialize connection once
-  MongoClient.connect("mongodb+srv://user1:QQ0JVU1JlFlTkfQb@cluster0.mongodb.net/db_1", function(err, database) {
+  MongoClient.connect(uri, function(err, database) {
     if(err) {
       console.error('error while connecting ...' + JSON.stringify(err));
       throw err;
