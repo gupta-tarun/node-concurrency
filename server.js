@@ -30,7 +30,7 @@ function start() {
       console.error('error while connecting ...' + JSON.stringify(err));
       throw err;
     }
-    console.error(JSON.stringify(database));
+    console.error(database);
 
     db = database.db;
 
