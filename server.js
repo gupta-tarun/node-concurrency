@@ -25,14 +25,14 @@ function start() {
   
   console.error('trying to connect to db ...');
   // Initialize connection once
-  MongoClient.connect(uri, function(err, database) {
+  MongoClient.connect(uri, function(err, client) {
     if(err) {
       console.error('error while connecting ...' + JSON.stringify(err));
       throw err;
     }
-    console.error(database);
+    console.error(client);
 
-    db = database.db;
+    db = client.db('test');
 
     // Start the application after the database connection is ready
     app
