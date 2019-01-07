@@ -45,23 +45,19 @@ function start() {
   });
 
   function cpuBound(req, res, next) {
-    client.connect(err => {
-      const collection = db.collection("c_1");
+    const collection = db.collection("c_1");
 
-      var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
-      var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
-      var date = Date.now() + '';
-      hmac.setEncoding('base64');
-      hmac.end(date, function() {
-        collection.insertOne({key: hmac.read()}, function(err, res) {
+    var key = Math.random() < 0.5 ? 'ninjaturtles' : 'powerrangers';
+    var hmac = crypto.createHmac('sha512WithRSAEncryption', key);
+    var date = Date.now() + '';
+    hmac.setEncoding('base64');
+    hmac.end(date, function() {
+      collection.insertOne({key: hmac.read()}, function(err, res) {
         // perform actions on the collection object
-          client.close();
-          if(err) { return res.send('Error Happened ' + JSON.stringify(err)); }
-          return res.send('Successful ' + JSON.stringify(res));
-        });
+        if(err) { return res.send('Error Happened ' + JSON.stringify(err)); }
+        return res.send('Successful ' + JSON.stringify(res));
       });
     });
-    
   }
 
   function memoryBound(req, res, next) {
